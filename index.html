@@ -165,9 +165,9 @@
     const back = document.createElement("div");
     back.classList.add("card-back");
 
-    if (reward === "Double Bonanza") {
+    if (reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 100 Pts" || reward === "Double Bonanza - 500 Pts") {
       back.classList.add("bonus", "double");
-    } else if (reward === "Pass and Win!") {
+    } else if (reward === "Pass and Win! - 500 Pts" || reward === "Pass and Win! - 250 Pts" || reward === "Pass and Win! - 100 Pts") {
       back.classList.add("bonus", "pass");
     } else {
       back.classList.add("normal");
