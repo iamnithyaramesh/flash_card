@@ -133,13 +133,14 @@
   const cardGrid = document.getElementById("cardGrid");
 
   const values = [
-    ...Array(11).fill("Rs.50"),
+    ...Array(10).fill("Rs.50"),
     ...Array(6).fill("Rs.100"),
     ...Array(5).fill("Rs.250"),
     ...Array(3).fill("Rs.500"),
     "Double Bonanza",
     "Double Bonanza",
     "Double Bonanza",
+    "Pass and Win!",
     "Pass and Win!",
     "Pass and Win!"
   ];
@@ -158,7 +159,7 @@
 
     const front = document.createElement("div");
     front.classList.add("card-front");
-    front.innerText = `Card ${index + 1}`;
+    front.innerText = `${index + 1}`;
 
     const back = document.createElement("div");
     back.classList.add("card-back");
