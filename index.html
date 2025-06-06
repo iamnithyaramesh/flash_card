@@ -39,7 +39,7 @@
     }
 
     .flashcard {
-      width: 150px;
+      width: 170px;
       height: 120px;
       perspective: 1000px;
       cursor: pointer;
@@ -89,7 +89,7 @@
       transform: rotateY(180deg);
       font-size: 1.1rem;
       color: #1f2937;
-      font-size: 28px;
+      font-size: 29px;
     }
 
     .normal {
@@ -139,12 +139,12 @@
     ...Array(6).fill("100 Pts"),
     ...Array(5).fill("250 Pts"),
     ...Array(3).fill("500 Pts"),
-    "Double Bonanza - 500 Pts",
     "Double Bonanza - 250 Pts",
-    "Double Bonanza - 100 Pts",
-    "Pass and Win! - 500 Pts",
-    "Pass and Win! - 500 Pts",
-    "Pass and Win! - 100 Pts"
+    "Double Bonanza - 250 Pts",
+    "Double Bonanza - 250 Pts",
+    "Pass and Win! - 200 Pts",
+    "Pass and Win! - 200 Pts",
+    "Pass and Win! - 200 Pts"
   ];
 
   const shuffled = values
@@ -166,9 +166,9 @@
     const back = document.createElement("div");
     back.classList.add("card-back");
 
-    if (reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 100 Pts" || reward === "Double Bonanza - 500 Pts") {
+    if (reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 250 Pts") {
       back.classList.add("bonus", "double");
-    } else if (reward === "Pass and Win! - 500 Pts" || reward === "Pass and Win! - 250 Pts" || reward === "Pass and Win! - 100 Pts") {
+    } else if (reward === "Pass and Win! - 200 Pts" || reward === "Pass and Win! - 200 Pts" || reward === "Pass and Win! - 200 Pts") {
       back.classList.add("bonus", "pass");
     } else {
       back.classList.add("normal");
