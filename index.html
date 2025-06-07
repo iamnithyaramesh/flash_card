@@ -109,6 +109,23 @@
       background: linear-gradient(to top left, #93c5fd, #60a5fa);
     }
 
+    .pts-50 {
+      background: linear-gradient(to top left, #fef08a, #fde047);
+      color: #41210d;
+    }
+    .pts-100 {
+      background: linear-gradient(to top left, #a7f3d0, #34d399);
+      color: #052c21;
+    }
+    .pts-250 {
+      background: linear-gradient(to top left, #fca5a5, #f87171);
+      color: #330303;
+    }
+    .pts-500 {
+      background: linear-gradient(to top left, #a5b4fc, #6366f1);
+      color: #08122b;
+    }
+
     @keyframes pulse {
       0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
       100% { box-shadow: 0 0 25px rgba(255, 255, 255, 0.9); }
@@ -124,6 +141,29 @@
         font-size: 0.9rem;
       }
     }
+
+    @keyframes rotateClock {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    #modalTimer {
+      font-size: 2.5rem;
+      text-align: center;
+      width: 100%;
+      display: block;
+      margin: 0 auto 0 auto;
+    }
+    #modalAnswer {
+      font-size: 4rem;
+      color: #059669;
+      font-weight: 900;
+      text-align: center;
+      word-break: break-word;
+      margin-top: 32px;
+      width: 100%;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -131,8 +171,29 @@
 <h1>TEST YOUR GST AND LUCK</h1>
 <div class="card-grid" id="cardGrid"></div>
 
+<!-- Modal Structure -->
+<div id="modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); align-items:center; justify-content:center; z-index:1000;">
+  <div id="modalContent" style="background:#fff; border-radius:36px; padding:80px 60px; min-width:800px; max-width:1200px; box-shadow:0 8px 32px rgba(0,0,0,0.2); display:flex; flex-direction:column; align-items:center; position:relative;">
+    <button id="closeModal" style="position:absolute; top:32px; right:40px; background:none; border:none; font-size:48px; cursor:pointer;">&times;</button>
+    <div id="modalQuestion" style="font-size:2.7rem; margin-bottom:48px; text-align:center; line-height:1.6; word-break:break-word;"></div>
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; margin-bottom:48px;">
+      <div style="display:flex; align-items:center; justify-content:center; width:100%;">
+        <div id="clockAnim" style="width:64px; height:64px; margin-right:24px;"></div>
+        <div id="modalTimer"></div>
+      </div>
+    </div>
+    <div id="modalAnswer"></div>
+  </div>
+</div>
+
 <script>
   const cardGrid = document.getElementById("cardGrid");
+  const modal = document.getElementById("modal");
+  const modalQuestion = document.getElementById("modalQuestion");
+  const modalTimer = document.getElementById("modalTimer");
+  const modalAnswer = document.getElementById("modalAnswer");
+  const closeModalBtn = document.getElementById("closeModal");
+  const clockAnim = document.getElementById("clockAnim");
 
   const values = [
     ...Array(10).fill("50 Pts"),
@@ -147,12 +208,114 @@
     "Pass and Win! - 200 Pts"
   ];
 
-  const shuffled = values
-    .map(value => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => value);
+  // Questions and answers mapped to points, in the order shown in the image
+  const qaList = [
+    { q: "Which is the apex body responsible for Legislative framework and administration of GST in India?", a: "GST Council", pts: 50 },
+    { q: "What is the taxable event under GST?", a: "Supply", pts: 50 },
+    { q: "Items out of the purview of Supply are provided in which schedule?", a: "Schedule III", pts: 100 },
+    { q: "What shall be the tax rate applicable in case of Composite supply?", a: "Tax rate on principal item", pts: 50 },
+    { q: "A movie ticket with a popcorn combo. What type of supply it shall constitute?", a: "Mixed supply", pts: 100 },
+    { q: "Which section provides for the levy of the CGST?", a: "Section 9", pts: 50 },
+    { q: "If prices are increased after negotiations, the supplier should issue", a: "Debit Note with GST", pts: "Pass" },
+    { q: "Which real estate transactions is generally outside the purview of GST?", a: "Sale of a completed apartment ready for possession", pts: 250 },
+    { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered", a: "Inter-state, TDS, TCS, ISD.....", pts: 250 },
+    { q: "What is the time limit for filing a refund claim for unutilized ITC on account of inverted duty structure?", a: "2 years from the end of the relevant financial year", pts: 500 },
+    { q: "Where the goods are assembled or installed at site, the place of supply shall be", a: "Place of such installation or assembly", pts: 50 },
+    { q: "What is the most significant legal issue in computer forensics?", a: "Admissibility of Evidence.", pts: "Double" },
+    { q: "The time limit for receiving back the inputs sent for job work after completion of job work or otherwise is", a: "Within one year of being sent out", pts: 100 },
+    { q: "A department of the Central Government or State Government has to deduct tax from the payment to the supplier, where the total value of such supply, under a contract, exceeds", a: "Two lakh and fifty thousand rupees", pts: 500 },
+    { q: "Every registered person required to retain the books of account or other records until the expiry of _____ from the due date of furnishing of annual return for the year pertaining to such accounts and records", a: "Seventy-two months", pts: "Double" },
+    { q: "Form GSTR-6 is a return for furnishing the details of", a: "Input Service Distributors", pts: 50 },
+    { q: "The amount of input tax credit available in the electronic credit ledger of the registered person on account of integrated tax shall first be utilised towards payment of", a: "Integrated tax or IGST", pts: 100 },
+    { q: "Collection of GST at source shall be made by", a: "Electronic commerce operator", pts: 50 },
+    { q: "In the case of any claim for refund on account of Inverted duty structure, the percentage of refund that can be sanctioned provisionally is", a: "Nil", pts: 500 },
+    { q: "A casual taxable person or a non-resident taxable person shall apply for registration", a: "At least 5 days prior to the commencement of business", pts: 50 },
+    { q: "What is the time limit for filing of annual return in GSTR-09?", a: "31st December following the end of the financial year", pts: 250 },
+    { q: "What is the place of supply of goods in case of export from India?", a: "Location outside India", pts: 250 },
+    { q: "A temporary registration issued for a casual taxable person is valid for", a: "90 days", pts: 250 },
+    { q: "When does the Seized items which are not relied upon to be returned back?", a: "Within 30 days of issue of notice", pts: "Pass" },
+    { q: "OIDAR stands for?", a: "Online Information Database Access or retrieval service", pts: 500 },
+    { q: "I am a registered taxpayer purchasing 100kg cashewnuts directly from an agriculturist. Is this transaction liable to tax? If so how?", a: "Yes, under RCM by the registered taxpayer being the recipient", pts: 500 },
+    { q: "Payment of taxes by the normal taxpayer is to be done on monthly basis by", a: "20th of the succeeding month.", pts: 500 },
+    { q: "XY Corp, a buyer with a purchase invoice dated 8th December 2021 (FY 2021-22), wants to claim GST paid on that purchase", a: "30th November 2022 / The date of filing GST annual return for FY 2021-22 is 31st December 2022.", pts: 500 },
+    { q: "Name 3 items/cases for which the E-way bill is not required to be generated", a: `Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers\n2 Kerosene oil sold under PDS\n3 Postal baggage transported by Department of Posts\n4 Natural or cultured pearls and pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)*\n5 Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*\n6 Currency\n7 Used personal and household effects\n8 Coral, un-worked (0508) and worked coral`, pts: "Double" },
+    { q: "What is GSTR-3A?", a: "Failed to furnish the returns. Issue notice to furnish return within 15 days", pts: 50 },
+  ];
 
-  shuffled.forEach((reward, index) => {
+  // Shuffle and assign questions to cards based on their reward value
+  const shuffled = values
+    .map((value, i) => ({ value, sort: Math.random() }))
+    .sort((a, b) => a.sort - b.sort)
+    .map(({ value }) => {
+      // Find a question with matching points or type
+      let idx = qaList.findIndex(qa => {
+        if (value === "Double Bonanza - 250 Pts" && qa.pts === "Double") return true;
+        if (value === "Pass and Win! - 200 Pts" && qa.pts === "Pass") return true;
+        if (typeof qa.pts === 'number' && value.includes(qa.pts + ' Pts')) return true;
+        return false;
+      });
+      if (idx === -1) idx = 0; // fallback
+      const qa = qaList.splice(idx, 1)[0];
+      return { value, q: qa.q, a: qa.a };
+    });
+
+  let timerId = null;
+  let timeLeft = 45;
+
+  function renderClock(second) {
+    // Draw a simple SVG clock with a moving hand
+    const angle = (second % 60) * 6; // 360/60
+    return `
+      <svg width="36" height="36" viewBox="0 0 36 36">
+        <circle cx="18" cy="18" r="16" fill="#f3f4f6" stroke="#64748b" stroke-width="2" />
+        <line x1="18" y1="18" x2="18" y2="6" stroke="#64748b" stroke-width="2" transform="rotate(${angle} 18 18)"/>
+        <circle cx="18" cy="18" r="2" fill="#64748b" />
+      </svg>
+    `;
+  }
+
+  function openModal(question, answer) {
+    modal.style.display = "flex";
+    modalQuestion.innerText = question;
+    modalAnswer.innerText = "";
+    timeLeft = 45;
+    modalTimer.innerText = `Time left: ${timeLeft}s`;
+    modalTimer.style.color = "#1e293b";
+    clockAnim.innerHTML = renderClock(timeLeft);
+    timerId = setInterval(() => {
+      timeLeft--;
+      clockAnim.innerHTML = renderClock(timeLeft);
+      if (timeLeft <= 10) {
+        modalTimer.style.color = "#dc2626"; // red
+      } else {
+        modalTimer.style.color = "#1e293b";
+      }
+      modalTimer.innerText = `Time left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timerId);
+        clockAnim.innerHTML = renderClock(0);
+        modalTimer.innerText = "Time's up!";
+        modalTimer.style.color = "#dc2626";
+        modalAnswer.innerText = answer;
+      }
+    }, 1000);
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+    modalQuestion.innerText = "";
+    modalTimer.innerText = "";
+    modalAnswer.innerText = "";
+    clockAnim.innerHTML = "";
+    if (timerId) clearInterval(timerId);
+  }
+
+  closeModalBtn.onclick = closeModal;
+  modal.onclick = function(e) {
+    if (e.target === modal) closeModal();
+  };
+
+  shuffled.forEach(({ value: reward, q: question, a: answer }, index) => {
     const card = document.createElement("div");
     card.classList.add("flashcard");
 
@@ -172,6 +335,15 @@
       back.classList.add("bonus", "pass");
     } else {
       back.classList.add("normal");
+      if (reward === "50 Pts") {
+        back.classList.add("pts-50");
+      } else if (reward === "100 Pts") {
+        back.classList.add("pts-100");
+      } else if (reward === "250 Pts") {
+        back.classList.add("pts-250");
+      } else if (reward === "500 Pts") {
+        back.classList.add("pts-500");
+      }
     }
 
     back.innerText = reward;
@@ -180,8 +352,16 @@
     cardInner.appendChild(back);
     card.appendChild(cardInner);
 
+    // State for each card
+    let clickCount = 0;
+
     card.addEventListener("click", () => {
-      card.classList.toggle("flipped");
+      clickCount++;
+      if (clickCount === 1) {
+        card.classList.toggle("flipped");
+      } else if (clickCount === 2) {
+        openModal(question, answer);
+      }
     });
 
     cardGrid.appendChild(card);
