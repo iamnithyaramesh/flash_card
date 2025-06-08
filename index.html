@@ -284,6 +284,29 @@
   let timerId = null;
   let timeLeft = 45;
 
+  let answeredCount = 0;
+  const totalCards = cards.length;
+  let gameEnded = false;
+
+  function showCreditsCard() {
+    modal.style.display = "flex";
+    document.getElementById("modalContent").innerHTML = `
+      <button id="closeModal" style="position:absolute; top:32px; right:40px; background:none; border:none; font-size:48px; cursor:pointer;">&times;</button>
+      <div style="font-size:2.5rem; margin-bottom:24px; color:#059669;">🎉 Game Over!</div>
+      <div style="font-size:1.7rem; margin-bottom:32px;">Thanks for playing!</div>
+      <div style="font-size:1.2rem; color:#64748b;">Conceptualized by : D Suganya , A.A.D </div>
+      <div style="font-size:1.2rem; color:#64748b;">Question Curation by : Jayanthi ,A.D & D.Suganya, A.A.D </div>
+      <div style="font-size:1.2rem; color:#64748b;">Developed by : R.Nithyasri</div>
+      <div style="font-size:1.2rem; color:#64748b;">Scoring Support : Venkata Surya Ganesh , Inspector</div>
+      <div style="font-size:1.2rem; color:#64748b;"> Copyrights Reserved: 20th Batch of Induction Course for Inspectors of GST , NACIN Chennai Team</div>
+    `;
+    const newCloseBtn = document.getElementById("closeModal");
+    if (newCloseBtn) newCloseBtn.onclick = closeModal;
+    modal.onclick = function(e) {
+      if (e.target === modal) closeModal();
+    };
+  }
+
   function renderClock(second) {
     // Draw a simple SVG clock with a moving hand
     const angle = (second % 60) * 6; // 360/60
@@ -297,6 +320,7 @@
   }
 
   function openModal(question, answer) {
+    if (gameEnded) return;
     modal.style.display = "flex";
     modalQuestion.innerText = question;
     modalAnswer.innerText = "";
@@ -316,6 +340,11 @@
       showAnswerBtn.disabled = true;
       showAnswerBtn.style.opacity = 0.6;
       showAnswerBtn.style.cursor = "not-allowed";
+      answeredCount++;
+      if (answeredCount === totalCards) {
+        gameEnded = true;
+        setTimeout(showCreditsCard, 800);
+      }
     }
 
     showAnswerBtn.onclick = revealAnswer;
@@ -338,27 +367,45 @@
         showAnswerBtn.disabled = true;
         showAnswerBtn.style.opacity = 0.6;
         showAnswerBtn.style.cursor = "not-allowed";
+        answeredCount++;
+        if (answeredCount === totalCards) {
+          gameEnded = true;
+          setTimeout(showCreditsCard, 800);
+        }
       }
     }, 1000);
   }
 
   function closeModal() {
     modal.style.display = "none";
-    modalQuestion.innerText = "";
-    modalTimer.innerText = "";
-    modalAnswer.innerText = "";
-    clockAnim.innerHTML = "";
-    showAnswerBtn.style.display = "none";
-    showAnswerBtn.disabled = false;
-    showAnswerBtn.style.opacity = 1;
-    showAnswerBtn.style.cursor = "pointer";
+    // Only restore modal content for next question if game hasn't ended
+    if (!gameEnded) {
+      document.getElementById("modalContent").innerHTML = `
+        <button id="closeModal" style="position:absolute; top:32px; right:40px; background:none; border:none; font-size:48px; cursor:pointer;">&times;</button>
+        <div id="modalQuestion" style="font-size:2.7rem; margin-bottom:48px; text-align:center; line-height:1.6; word-break:break-word;"></div>
+        <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; width:100%; margin-bottom:48px;">
+          <div style="display:flex; align-items:center; justify-content:center; width:100%;">
+            <div id="clockAnim" style="width:64px; height:64px; margin-right:24px;"></div>
+            <div id="modalTimer"></div>
+          </div>
+        </div>
+        <button id="showAnswerBtn" style="font-size:2rem; margin-bottom:24px; padding:12px 32px; background:#059669; color:#fff; border:none; border-radius:12px; cursor:pointer;">Show Answer</button>
+        <div id="modalAnswer"></div>
+      `;
+      // Re-assign modal element references
+      window.modalQuestion = document.getElementById("modalQuestion");
+      window.modalTimer = document.getElementById("modalTimer");
+      window.modalAnswer = document.getElementById("modalAnswer");
+      window.clockAnim = document.getElementById("clockAnim");
+      window.showAnswerBtn = document.getElementById("showAnswerBtn");
+      const newCloseBtn = document.getElementById("closeModal");
+      if (newCloseBtn) newCloseBtn.onclick = closeModal;
+      modal.onclick = function(e) {
+        if (e.target === modal) closeModal();
+      };
+    }
     if (timerId) clearInterval(timerId);
   }
-
-  closeModalBtn.onclick = closeModal;
-  modal.onclick = function(e) {
-    if (e.target === modal) closeModal();
-  };
 
   // Shuffle the cards array
   function shuffle(array) {
@@ -410,6 +457,7 @@
     let clickCount = 0;
 
     card.addEventListener("click", () => {
+      if (gameEnded) return;
       clickCount++;
       if (clickCount === 1) {
         card.classList.toggle("flipped");
