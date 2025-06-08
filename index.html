@@ -30,10 +30,10 @@
 
     .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(6, 1fr);
       gap: 40px;
       padding: 40px;
-      max-width: 1000px;
+      max-width: 1200px;
       width: 100%;
       justify-items: center;
     }
@@ -155,14 +155,18 @@
       margin: 0 auto 0 auto;
     }
     #modalAnswer {
-      font-size: 4rem;
+      font-size: 2.5rem;
       color: #059669;
       font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       word-break: break-word;
       margin-top: 32px;
       width: 100%;
-      display: block;
+      min-height: 120px;
+      padding: 0 24px;
     }
   </style>
 </head>
@@ -182,6 +186,7 @@
         <div id="modalTimer"></div>
       </div>
     </div>
+    <button id="showAnswerBtn" style="font-size:2rem; margin-bottom:24px; padding:12px 32px; background:#059669; color:#fff; border:none; border-radius:12px; cursor:pointer;">Show Answer</button>
     <div id="modalAnswer"></div>
   </div>
 </div>
@@ -194,70 +199,62 @@
   const modalAnswer = document.getElementById("modalAnswer");
   const closeModalBtn = document.getElementById("closeModal");
   const clockAnim = document.getElementById("clockAnim");
+  const showAnswerBtn = document.getElementById("showAnswerBtn");
 
   const values = [
-    ...Array(10).fill("50 Pts"),
-    ...Array(6).fill("100 Pts"),
-    ...Array(5).fill("250 Pts"),
-    ...Array(3).fill("500 Pts"),
-    "Double Bonanza - 250 Pts",
-    "Double Bonanza - 250 Pts",
-    "Double Bonanza - 250 Pts",
-    "Pass and Win! - 200 Pts",
-    "Pass and Win! - 200 Pts",
-    "Pass and Win! - 200 Pts"
+    "50 Pts", "50 Pts", "100 Pts", "50 Pts", "100 Pts", "50 Pts",
+    "250 Pts", "250 Pts", "500 Pts", "50 Pts", "Double Bonanza - 250 Pts", "100 Pts",
+    "500 Pts", "Double Bonanza - 250 Pts", "50 Pts", "100 Pts", "50 Pts", "100 Pts",
+    "500 Pts", "50 Pts", "250 Pts", "250 Pts", "250 Pts", "Pass & Win - 200 Pts",
+    "500 Pts", "500 Pts", "500 Pts", "Double Bonanza - 250 Pts", "Pass & Win - 200 Pts", "50 Pts",
+    "250 Pts", "250 Pts", "Double Bonanza - 250 Pts", "Double Bonanza - 250 Pts", "Pass & Win - 200 Pts", "Pass & Win - 200 Pts"
   ];
 
-  // Questions and answers mapped to points, in the order shown in the image
+  // 36 questions and answers from the image, mapped to points
   const qaList = [
     { q: "Which is the apex body responsible for Legislative framework and administration of GST in India?", a: "GST Council", pts: 50 },
-    { q: "What is the taxable event under GST?", a: "Supply", pts: 50 },
-    { q: "Items out of the purview of Supply are provided in which schedule?", a: "Schedule III", pts: 100 },
+    { q: "In respect of Refund claims, payment order is issued in which Form and by whom?", a: "The payment order in FORM GST RFD-05 shall be issued by the Proper Officer and the same shall be credited electronically to the bank account of the applicant", pts: 50 },
+    { q: "Items out of the purview of Supply are provided in", a: "Schedule III", pts: 100 },
     { q: "What shall be the tax rate applicable in case of Composite supply?", a: "Tax rate on principal item", pts: 50 },
-    { q: "A movie ticket with a popcorn combo. What type of supply it shall constitute?", a: "Mixed supply", pts: 100 },
+    { q: "A movie ticket with a popcorn combo. - What type of supply it shall constitute?", a: "Mixed supply", pts: 100 },
     { q: "Which section provides for the levy of the CGST?", a: "Section 9", pts: 50 },
-    { q: "If prices are increased after negotiations, the supplier should issue", a: "Debit Note with GST", pts: "Pass" },
+    { q: "If the prices are increased after renegotiations, the supplier should issue", a: "Note or supplementary Invoice with GST (Section 34(4))", pts: 250 },
     { q: "Which real estate transactions is generally outside the purview of GST?", a: "Sale of a completed apartment ready for possession", pts: 250 },
-    { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered", a: "Inter-state, TDS, TCS, ISD.....", pts: 250 },
-    { q: "What is the time limit for filing a refund claim for unutilized ITC on account of inverted duty structure?", a: "2 years from the end of the relevant financial year", pts: 500 },
-    { q: "Where the goods are assembled or installed at site, the place of supply shall be", a: "Place of such installation or assembly", pts: 50 },
-    { q: "What is the most significant legal issue in computer forensics?", a: "Admissibility of Evidence.", pts: "Double" },
-    { q: "The time limit for receiving back the inputs sent for job work after completion of job work or otherwise is", a: "Within one year of being sent out", pts: 100 },
-    { q: "A department of the Central Government or State Government has to deduct tax from the payment to the supplier, where the total value of such supply, under a contract, exceeds", a: "Two lakh and fifty thousand rupees", pts: 500 },
-    { q: "Every registered person required to retain the books of account or other records until the expiry of _____ from the due date of furnishing of annual return for the year pertaining to such accounts and records", a: "Seventy-two months", pts: "Double" },
-    { q: "Form GSTR-6 is a return for furnishing the details of", a: "Input Service Distributors", pts: 50 },
-    { q: "The amount of input tax credit available in the electronic credit ledger of the registered person on account of integrated tax shall first be utilised towards payment of", a: "Integrated tax or IGST", pts: 100 },
-    { q: "Collection of GST at source shall be made by", a: "Electronic commerce operator", pts: 50 },
-    { q: "In the case of any claim for refund on account of Inverted duty structure, the percentage of refund that can be sanctioned provisionally is", a: "Nil", pts: 500 },
+    { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered irrespective of the threshold limit.", a: "Inter-state supplies, TDS, TCS, ISD,CTP, RCM,NRTP, Agents, Online money gaming, E-commerce operators, supplying through E-commerce operators", pts: 500 },
+    { q: "What is the time limit for filing a refund claim for unutilized ITC on account of inverted duty structure?", a: "2 years from the end of the relevant financial year", pts: 50 },
+    { q: "Where the goods are assembled or installed at site, the place of supply shall be", a: "Place of such installation or assembly", pts: "Double" },
+    { q: "What is the most significant legal issue in computer forensics?", a: "Admissibility of Evidence.", pts: 100 },
+    { q: "The time limit for receiving back the inputs sent for job work after completion of job work or otherwise is", a: "Within one year of being sent out", pts: 500 },
+    { q: "A department of the Central Government or State Government has to deduct tax from the payment made or credited to the supplier of taxable goods or services or both, where the total value of such supply, under a contract, exceeds the total value of", a: "Two lakh and fifty thousand rupees", pts: "Double" },
+    { q: "Every registered person required to retain the books of account or other records until the expiry of _____ from the due date of furnishing of annual return for the year pertaining to such accounts and records", a: "Seventy-two months", pts: 50 },
+    { q: "Form GSTR-1 is a return for furnishing the details of", a: "Outward supplies", pts: 100 },
+    { q: "The amount of input tax credit available in the electronic credit ledger of the registered person on account of integrated tax shall first be utilised towards payment of", a: "Integrated tax or IGST", pts: 50 },
+    { q: "What is the rate of tax on delayed payment of tax? And what is the rate on wrong availment and utilisation of ITC", a: "18% and 24%", pts: 100 },
+    { q: "The percentage of refund that can be sanctioned provisionally in the case of zero rated supply of goods is", a: "90%", pts: 500 },
     { q: "A casual taxable person or a non-resident taxable person shall apply for registration", a: "At least 5 days prior to the commencement of business", pts: 50 },
-    { q: "What is the time limit for filing of annual return in GSTR-09?", a: "31st December following the end of the financial year", pts: 250 },
+    { q: "What is the time limit for filing of annual return in GSTR -09?", a: "31st December following the end of the financial year", pts: 250 },
     { q: "What is the place of supply of goods in case of export from India?", a: "Location outside India", pts: 250 },
     { q: "A temporary registration issued for a casual taxable person is valid for", a: "90 days", pts: 250 },
     { q: "When does the Seized items which are not relied upon to be returned back?", a: "Within 30 days of issue of notice", pts: "Pass" },
     { q: "OIDAR stands for?", a: "Online Information Database Access or retrieval service", pts: 500 },
-    { q: "I am a registered taxpayer purchasing 100kg cashewnuts directly from an agriculturist. Is this transaction liable to tax? If so how?", a: "Yes, under RCM by the registered taxpayer being the recipient", pts: 500 },
-    { q: "Payment of taxes by the normal taxpayer is to be done on monthly basis by", a: "20th of the succeeding month.", pts: 500 },
-    { q: "XY Corp, a buyer with a purchase invoice dated 8th December 2021 (FY 2021-22), wants to claim GST paid on that purchase", a: "30th November 2022 / The date of filing GST annual return for FY 2021-22 is 31st December 2022.", pts: 500 },
-    { q: "Name 3 items/cases for which the E-way bill is not required to be generated", a: `Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers\n2 Kerosene oil sold under PDS\n3 Postal baggage transported by Department of Posts\n4 Natural or cultured pearls and pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)*\n5 Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*\n6 Currency\n7 Used personal and household effects\n8 Coral, un-worked (0508) and worked coral`, pts: "Double" },
-    { q: "What is GSTR-3A?", a: "Failed to furnish the returns. Issue notice to furnish return within 15 days", pts: 50 },
+    { q: "I am a registered taxpayer purchasing 100kg cashewnuts directly from an agriculturist . Is this transaction liable to tax? If so how?", a: "Yes, under RCM by the registered taxpayer being the recipient", pts: 500 },
+    { q: "What is the due date for Payment of taxes by the normal taxpayer on monthly basis?", a: "20th of the succeeding month.", pts: 500 },
+    { q: "XY Corp, a buyer with a purchase invoice dated 8th December 2021 (FY 2021-22), wants to claim GST paid on that purchase. What is the due date for claiming the same?", a: "30th November 2022 / The date of filing GST annual return for FY 2021-22 is 31st December 2022.", pts: "Double" },
+    { q: "Name three items / cases for which the E-way bill is not required to be generated", a: "(i) Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers (ii) Kerosene oil sold under PDS (iii) Postal baggage transported by Department of Posts (iv) Natural or cultured pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)* (v) Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*(vi) Currency (vii) Used personal and household effects (viii) Coral, un-worked (0508) and worked coral", pts: "Double" },
+    { q: "What is GSTR-3A?", a: "In case of Failure in furnishing the returns. Five days after the due date of furnishing the return, GSTR-3A is a notice issued by the tax officer, seeking to furnish the return within 15 days", pts: "Pass" },
+    { q: "If someone trades only 0% GST items (grains, pulses) then is it necessary to register for GST, if the turnover exceeds ₹20 lacs?", a: "A person dealing with 100% exempted supply is not liable to register irrespective of turnover.", pts: 250 },
+    { q: "Can an unregistered dealer supply goods to other States if his turnover is below Rs. 20 lakhs?", a: "No. The supplier would be liable to obtain registration in case of Inter-State supplies irrespective of his turnover.", pts: 250 },
+    { q: "I am an ice cream manufacturer with sales in one state only. Can I avail the option of composition scheme? Name the three categories of persons who are not eligible for composition scheme?", a: "No. The following three classes of persons, namely - Ice cream and other edible ice, whether or not containing cocoa. - Pan masala - All goods, i.e. Tobacco and manufactured tobacco substitutes are not eligible for benefit of composition scheme.", pts: "Double" },
+    { q: "How would the sale and purchase of goods to and from SEZ will be treated? Will it be export / import?", a: "Supply to SEZs is zero rated supplies and supplies by SEZs to DTA are treated as imports.", pts: "Double" },
+    { q: "What is the time within which  TCS is to be remitted by the e-commerce operator to the Government account?", a: "Within 10 days after the end of the month in which the said amount was so collected.", pts: "Pass" },
+    { q: "What is Final Return? When it should be filed?", a: "A taxable person whose GST registration is cancelled or surrendered has to file a return in Form GSTR-10 called as Final Return. This return should be filed within three months from the date of cancellation or date of order of cancellation, whichever is later.", pts: "Pass" }
   ];
 
-  // Shuffle and assign questions to cards based on their reward value
-  const shuffled = values
-    .map((value, i) => ({ value, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ value }) => {
-      // Find a question with matching points or type
-      let idx = qaList.findIndex(qa => {
-        if (value === "Double Bonanza - 250 Pts" && qa.pts === "Double") return true;
-        if (value === "Pass and Win! - 200 Pts" && qa.pts === "Pass") return true;
-        if (typeof qa.pts === 'number' && value.includes(qa.pts + ' Pts')) return true;
-        return false;
-      });
-      if (idx === -1) idx = 0; // fallback
-      const qa = qaList.splice(idx, 1)[0];
-      return { value, q: qa.q, a: qa.a };
-    });
+  // Assign questions to cards in order, matching values and qaList by index
+  const cards = values.map((value, i) => {
+    const qa = qaList[i];
+    return { value, q: qa.q, a: qa.a };
+  });
 
   let timerId = null;
   let timeLeft = 45;
@@ -282,6 +279,22 @@
     modalTimer.innerText = `Time left: ${timeLeft}s`;
     modalTimer.style.color = "#1e293b";
     clockAnim.innerHTML = renderClock(timeLeft);
+    showAnswerBtn.style.display = "block";
+    showAnswerBtn.disabled = false;
+
+    function revealAnswer() {
+      clearInterval(timerId);
+      clockAnim.innerHTML = renderClock(0);
+      modalTimer.innerText = "Answer revealed!";
+      modalTimer.style.color = "#059669";
+      modalAnswer.innerText = answer;
+      showAnswerBtn.disabled = true;
+      showAnswerBtn.style.opacity = 0.6;
+      showAnswerBtn.style.cursor = "not-allowed";
+    }
+
+    showAnswerBtn.onclick = revealAnswer;
+
     timerId = setInterval(() => {
       timeLeft--;
       clockAnim.innerHTML = renderClock(timeLeft);
@@ -297,6 +310,9 @@
         modalTimer.innerText = "Time's up!";
         modalTimer.style.color = "#dc2626";
         modalAnswer.innerText = answer;
+        showAnswerBtn.disabled = true;
+        showAnswerBtn.style.opacity = 0.6;
+        showAnswerBtn.style.cursor = "not-allowed";
       }
     }, 1000);
   }
@@ -307,6 +323,10 @@
     modalTimer.innerText = "";
     modalAnswer.innerText = "";
     clockAnim.innerHTML = "";
+    showAnswerBtn.style.display = "none";
+    showAnswerBtn.disabled = false;
+    showAnswerBtn.style.opacity = 1;
+    showAnswerBtn.style.cursor = "pointer";
     if (timerId) clearInterval(timerId);
   }
 
@@ -315,7 +335,7 @@
     if (e.target === modal) closeModal();
   };
 
-  shuffled.forEach(({ value: reward, q: question, a: answer }, index) => {
+  cards.forEach(({ value: reward, q: question, a: answer }, index) => {
     const card = document.createElement("div");
     card.classList.add("flashcard");
 
@@ -329,9 +349,9 @@
     const back = document.createElement("div");
     back.classList.add("card-back");
 
-    if (reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 250 Pts" || reward === "Double Bonanza - 250 Pts") {
+    if (reward === "Double Bonanza - 250 Pts") {
       back.classList.add("bonus", "double");
-    } else if (reward === "Pass and Win! - 200 Pts" || reward === "Pass and Win! - 200 Pts" || reward === "Pass and Win! - 200 Pts") {
+    } else if (reward === "Pass & Win - 200 Pts") {
       back.classList.add("bonus", "pass");
     } else {
       back.classList.add("normal");
