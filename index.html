@@ -210,40 +210,40 @@
     "250 Pts", "250 Pts", "Double Bonanza - 250 Pts", "Double Bonanza - 250 Pts", "Pass & Win - 200 Pts", "Pass & Win - 200 Pts"
   ];
 
-  // 36 questions and answers from the image, mapped to points
+
   const qaList = [
     { q: "Which is the apex body responsible for Legislative framework and administration of GST in India?", a: "GST Council", pts: 50 },
     { q: "In respect of Refund claims, payment order is issued in which Form and by whom?", a: "The payment order in FORM GST RFD-05 shall be issued by the Proper Officer and the same shall be credited electronically to the bank account of the applicant", pts: 50 },
-    { q: "Items out of the purview of Supply are provided in", a: "Schedule III", pts: 100 },
-    { q: "What shall be the tax rate applicable in case of Composite supply?", a: "Tax rate on principal item", pts: 50 },
-    { q: "A movie ticket with a popcorn combo. - What type of supply it shall constitute?", a: "Mixed supply", pts: 100 },
-    { q: "Which section provides for the levy of the CGST?", a: "Section 9", pts: 50 },
+    { q: "Items out of the purview of Supply are provided in", a: "Schedule III", pts: 50},
+    { q: "What shall be the tax rate applicable in case of Composite supply?", a: "Tax rate on principal item", pts: 100 },
+    { q: "A movie ticket with a popcorn combo. - What type of supply it shall constitute?", a: "Mixed supply", pts: 50 },
+    { q: "Which section provides for the levy of the CGST?", a: "Section 9", pts: 100 },
     { q: "If the prices are increased after renegotiations, the supplier should issue", a: "Note or supplementary Invoice with GST (Section 34(4))", pts: 250 },
     { q: "Which real estate transactions is generally outside the purview of GST?", a: "Sale of a completed apartment ready for possession", pts: 250 },
-    { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered irrespective of the threshold limit.", a: "Inter-state supplies, TDS, TCS, ISD,CTP, RCM,NRTP, Agents, Online money gaming, E-commerce operators, supplying through E-commerce operators", pts: 500 },
+    { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered irrespective of the threshold limit.", a: "Inter-state supplies, TDS, TCS, ISD,CTP, RCM,NRTP, Agents, Online money gaming, E-commerce operators, supplying through E-commerce operators", pts: 250 },
     { q: "What is the time limit for filing a refund claim for unutilized ITC on account of inverted duty structure?", a: "2 years from the end of the relevant financial year", pts: 50 },
-    { q: "Where the goods are assembled or installed at site, the place of supply shall be", a: "Place of such installation or assembly", pts: "Double" },
-    { q: "What is the most significant legal issue in computer forensics?", a: "Admissibility of Evidence.", pts: 100 },
-    { q: "The time limit for receiving back the inputs sent for job work after completion of job work or otherwise is", a: "Within one year of being sent out", pts: 500 },
-    { q: "A department of the Central Government or State Government has to deduct tax from the payment made or credited to the supplier of taxable goods or services or both, where the total value of such supply, under a contract, exceeds the total value of", a: "Two lakh and fifty thousand rupees", pts: "Double" },
-    { q: "Every registered person required to retain the books of account or other records until the expiry of _____ from the due date of furnishing of annual return for the year pertaining to such accounts and records", a: "Seventy-two months", pts: 50 },
-    { q: "Form GSTR-1 is a return for furnishing the details of", a: "Outward supplies", pts: 100 },
-    { q: "The amount of input tax credit available in the electronic credit ledger of the registered person on account of integrated tax shall first be utilised towards payment of", a: "Integrated tax or IGST", pts: 50 },
-    { q: "What is the rate of tax on delayed payment of tax? And what is the rate on wrong availment and utilisation of ITC", a: "18% and 24%", pts: 100 },
-    { q: "The percentage of refund that can be sanctioned provisionally in the case of zero rated supply of goods is", a: "90%", pts: 500 },
+    { q: "Where the goods are assembled or installed at site, the place of supply shall be", a: "Place of such installation or assembly", pts: 50 },
+    { q: "What is the most significant legal issue in computer forensics?", a: "Admissibility of Evidence.", pts: 500 },
+    { q: "The time limit for receiving back the inputs sent for job work after completion of job work or otherwise is", a: "Within one year of being sent out", pts: 250 },
+    { q: "A department of the Central Government or State Government has to deduct tax from the payment made or credited to the supplier of taxable goods or services or both, where the total value of such supply, under a contract, exceeds the total value of", a: "Two lakh and fifty thousand rupees", pts: 250 },
+    { q: "Every registered person required to retain the books of account or other records until the expiry of _____ from the due date of furnishing of annual return for the year pertaining to such accounts and records", a: "Seventy-two months", pts: 250 },
+    { q: "Form GSTR-1 is a return for furnishing the details of", a: "Outward supplies", pts: 50 },
+    { q: "The amount of input tax credit available in the electronic credit ledger of the registered person on account of integrated tax shall first be utilised towards payment of", a: "Integrated tax or IGST", pts: 100 },
+    { q: "What is the rate of tax on delayed payment of tax? And what is the rate on wrong availment and utilisation of ITC", a: "18% and 24%", pts: 500 },
+    { q: "The percentage of refund that can be sanctioned provisionally in the case of zero rated supply of goods is", a: "90%", pts: 100 },
     { q: "A casual taxable person or a non-resident taxable person shall apply for registration", a: "At least 5 days prior to the commencement of business", pts: 50 },
-    { q: "What is the time limit for filing of annual return in GSTR -09?", a: "31st December following the end of the financial year", pts: 250 },
-    { q: "What is the place of supply of goods in case of export from India?", a: "Location outside India", pts: 250 },
-    { q: "A temporary registration issued for a casual taxable person is valid for", a: "90 days", pts: 250 },
+    { q: "What is the time limit for filing of annual return in GSTR -09?", a: "31st December following the end of the financial year", pts: 100 },
+    { q: "What is the place of supply of goods in case of export from India?", a: "Location outside India", pts: 50 },
+    { q: "A temporary registration issued for a casual taxable person is valid for", a: "90 days", pts: 50 },
     { q: "When does the Seized items which are not relied upon to be returned back?", a: "Within 30 days of issue of notice", pts: "Pass" },
-    { q: "OIDAR stands for?", a: "Online Information Database Access or retrieval service", pts: 500 },
-    { q: "I am a registered taxpayer purchasing 100kg cashewnuts directly from an agriculturist . Is this transaction liable to tax? If so how?", a: "Yes, under RCM by the registered taxpayer being the recipient", pts: 500 },
-    { q: "What is the due date for Payment of taxes by the normal taxpayer on monthly basis?", a: "20th of the succeeding month.", pts: 500 },
+    { q: "OIDAR stands for?", a: "Online Information Database Access or retrieval service", pts: 100 },
+    { q: "I am a registered taxpayer purchasing 100kg cashewnuts directly from an agriculturist . Is this transaction liable to tax? If so how?", a: "Yes, under RCM by the registered taxpayer being the recipient", pts: "Double" },
+    { q: "What is the due date for Payment of taxes by the normal taxpayer on monthly basis?", a: "20th of the succeeding month.", pts: 100 },
     { q: "XY Corp, a buyer with a purchase invoice dated 8th December 2021 (FY 2021-22), wants to claim GST paid on that purchase. What is the due date for claiming the same?", a: "30th November 2022 / The date of filing GST annual return for FY 2021-22 is 31st December 2022.", pts: "Double" },
-    { q: "Name three items / cases for which the E-way bill is not required to be generated", a: "(i) Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers (ii) Kerosene oil sold under PDS (iii) Postal baggage transported by Department of Posts (iv) Natural or cultured pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)* (v) Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*(vi) Currency (vii) Used personal and household effects (viii) Coral, un-worked (0508) and worked coral", pts: "Double" },
-    { q: "What is GSTR-3A?", a: "In case of Failure in furnishing the returns. Five days after the due date of furnishing the return, GSTR-3A is a notice issued by the tax officer, seeking to furnish the return within 15 days", pts: "Pass" },
+    { q: "Name three items / cases for which the E-way bill is not required to be generated", a: "(i) Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers (ii) Kerosene oil sold under PDS (iii) Postal baggage transported by Department of Posts (iv) Natural or cultured pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)* (v) Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*(vi) Currency (vii) Used personal and household effects (viii) Coral, un-worked (0508) and worked coral", pts: "Pass" },
+    { q: "What is GSTR-3A?", a: "In case of Failure in furnishing the returns. Five days after the due date of furnishing the return, GSTR-3A is a notice issued by the tax officer, seeking to furnish the return within 15 days", pts: 500 },
     { q: "If someone trades only 0% GST items (grains, pulses) then is it necessary to register for GST, if the turnover exceeds ₹20 lacs?", a: "A person dealing with 100% exempted supply is not liable to register irrespective of turnover.", pts: 250 },
-    { q: "Can an unregistered dealer supply goods to other States if his turnover is below Rs. 20 lakhs?", a: "No. The supplier would be liable to obtain registration in case of Inter-State supplies irrespective of his turnover.", pts: 250 },
+    { q: "Can an unregistered dealer supply goods to other States if his turnover is below Rs. 20 lakhs?", a: "No. The supplier would be liable to obtain registration in case of Inter-State supplies irrespective of his turnover.", pts: 500 },
     { q: "I am an ice cream manufacturer with sales in one state only. Can I avail the option of composition scheme? Name the three categories of persons who are not eligible for composition scheme?", a: "No. The following three classes of persons, namely - Ice cream and other edible ice, whether or not containing cocoa. - Pan masala - All goods, i.e. Tobacco and manufactured tobacco substitutes are not eligible for benefit of composition scheme.", pts: "Double" },
     { q: "How would the sale and purchase of goods to and from SEZ will be treated? Will it be export / import?", a: "Supply to SEZs is zero rated supplies and supplies by SEZs to DTA are treated as imports.", pts: "Double" },
     { q: "What is the time within which  TCS is to be remitted by the e-commerce operator to the Government account?", a: "Within 10 days after the end of the month in which the said amount was so collected.", pts: "Pass" },
@@ -334,6 +334,15 @@
   modal.onclick = function(e) {
     if (e.target === modal) closeModal();
   };
+
+  // Shuffle the cards array
+  function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  }
+  shuffle(cards);
 
   cards.forEach(({ value: reward, q: question, a: answer }, index) => {
     const card = document.createElement("div");
