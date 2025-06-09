@@ -206,7 +206,7 @@
     "250 Pts", "250 Pts", "100 Pts", "50 Pts", "Double", "100 Pts",
     "500 Pts", "Double", "50 Pts", "100 Pts", "50 Pts", "100 Pts",
     "500 Pts", "50 Pts", "250 Pts", "250 Pts", "250 Pts", "Pass",
-    "500 Pts", "500 Pts", "500 Pts", "Double", "Pass", "50 Pts",
+    "500 Pts", "500 Pts", "250 Pts", "Double", "Pass", "50 Pts",
     "250 Pts", "100 Pts", "Double", "50 Pts", "Pass", "Pass"
   ];
 
@@ -214,11 +214,11 @@
   const qaList = [
     { q: "Which is the apex body responsible for Legislative framework and administration of GST in India?", a: "GST Council", pts: 50 },
     { q: "In respect of Refund claims, payment order is issued in which Form and by whom?", a: "The payment order in FORM GST RFD-05 shall be issued by the Proper Officer and the same shall be credited electronically to the bank account of the applicant", pts: 50 },
-    { q: "Items out of the purview of Supply are provided in", a: "Schedule III", pts: 50},
+    { q: "Items out of the purview of Supply are provided in", a: "Schedule III", pts: 50 },
     { q: "What shall be the tax rate applicable in case of Composite supply?", a: "Tax rate on principal item", pts: 100 },
     { q: "A movie ticket with a popcorn combo. - What type of supply it shall constitute?", a: "Mixed supply", pts: 50 },
     { q: "Which section provides for the levy of the CGST?", a: "Section 9", pts: 100 },
-    { q: "If the prices are increased after renegotiations, the supplier should issue", a: "Note or supplementary Invoice with GST (Section 34(4))", pts: 250 },
+    { q: "If the prices are increased after renegotiations, the supplier should issue", a: "Debit Note or supplementary Invoice with GST (Section 34(4))", pts: 250 },
     { q: "Which real estate transactions is generally outside the purview of GST?", a: "Sale of a completed apartment ready for possession", pts: 250 },
     { q: "Give 3 scenarios under which the taxpayer has to be compulsorily registered irrespective of the threshold limit.", a: "Inter-state supplies, TDS, TCS, ISD,CTP, RCM,NRTP, Agents, Online money gaming, E-commerce operators, supplying through E-commerce operators", pts: 250 },
     { q: "What is the time limit for filing a refund claim for unutilized ITC on account of inverted duty structure?", a: "2 years from the end of the relevant financial year", pts: 50 },
@@ -243,7 +243,7 @@
     { q: "Name three items / cases for which the E-way bill is not required to be generated", a: "(i) Liquefied petroleum gas for supply to household and non-domestic exempted category (NDEC) customers (ii) Kerosene oil sold under PDS (iii) Postal baggage transported by Department of Posts (iv) Natural or cultured pearls and precious or semi-precious stones; precious metals and metals clad with precious metal (Chapter 71)* (v) Jewellery, goldsmiths' and silversmiths' wares and other articles (Chapter 71)*(vi) Currency (vii) Used personal and household effects (viii) Coral, un-worked (0508) and worked coral", pts: "Pass" },
     { q: "What is GSTR-3A?", a: "In case of Failure in furnishing the returns. Five days after the due date of furnishing the return, GSTR-3A is a notice issued by the tax officer, seeking to furnish the return within 15 days", pts: 500 },
     { q: "If someone trades only 0% GST items (grains, pulses) then is it necessary to register for GST, if the turnover exceeds ₹20 lacs?", a: "A person dealing with 100% exempted supply is not liable to register irrespective of turnover.", pts: 250 },
-    { q: "Can an unregistered dealer supply goods to other States if his turnover is below Rs. 20 lakhs?", a: "No. The supplier would be liable to obtain registration in case of Inter-State supplies irrespective of his turnover.", pts: 500 },
+    { q: "Can an unregistered dealer supply goods to other States if his turnover is below Rs. 20 lakhs?", a: "No. The supplier would be liable to obtain registration in case of Inter-State supplies irrespective of his turnover.", pts: 250 },
     { q: "I am an ice cream manufacturer with sales in one state only. Can I avail the option of composition scheme? Name the three categories of persons who are not eligible for composition scheme?", a: "No. The following three classes of persons, namely - Ice cream and other edible ice, whether or not containing cocoa. - Pan masala - All goods, i.e. Tobacco and manufactured tobacco substitutes are not eligible for benefit of composition scheme.", pts: "Double" },
     { q: "How would the sale and purchase of goods to and from SEZ will be treated? Will it be export / import?", a: "Supply to SEZs is zero rated supplies and supplies by SEZs to DTA are treated as imports.", pts: "Double" },
     { q: "What is the time within which  TCS is to be remitted by the e-commerce operator to the Government account?", a: "Within 10 days after the end of the month in which the said amount was so collected.", pts: "Pass" },
@@ -286,26 +286,6 @@
 
   let answeredCount = 0;
   const totalCards = cards.length;
-  let gameEnded = false;
-
-  function showCreditsCard() {
-    modal.style.display = "flex";
-    document.getElementById("modalContent").innerHTML = `
-      <button id="closeModal" style="position:absolute; top:32px; right:40px; background:none; border:none; font-size:48px; cursor:pointer;">&times;</button>
-      <div style="font-size:2.5rem; margin-bottom:24px; color:#059669;">🎉 Game Over!</div>
-      <div style="font-size:1.7rem; margin-bottom:32px;">Thanks for playing!</div>
-      <div style="font-size:1.2rem; color:#64748b;">Conceptualized by : D Suganya , A.A.D </div>
-      <div style="font-size:1.2rem; color:#64748b;">Question Curation by : Jayanthi ,A.D & D.Suganya, A.A.D </div>
-      <div style="font-size:1.2rem; color:#64748b;">Developed by : R.Nithyasri</div>
-      <div style="font-size:1.2rem; color:#64748b;">Scoring Support : Venkata Surya Ganesh , Inspector</div>
-      <div style="font-size:1.2rem; color:#64748b;"> Copyrights Reserved: 20th Batch of Induction Course for Inspectors of GST , NACIN Chennai Team</div>
-    `;
-    const newCloseBtn = document.getElementById("closeModal");
-    if (newCloseBtn) newCloseBtn.onclick = closeModal;
-    modal.onclick = function(e) {
-      if (e.target === modal) closeModal();
-    };
-  }
 
   function renderClock(second) {
     // Draw a simple SVG clock with a moving hand
@@ -320,7 +300,6 @@
   }
 
   function openModal(question, answer) {
-    if (gameEnded) return;
     modal.style.display = "flex";
     modalQuestion.innerText = question;
     modalAnswer.innerText = "";
@@ -342,8 +321,7 @@
       showAnswerBtn.style.cursor = "not-allowed";
       answeredCount++;
       if (answeredCount === totalCards) {
-        gameEnded = true;
-        setTimeout(showCreditsCard, 800);
+        setTimeout(closeModal, 800);
       }
     }
 
@@ -369,8 +347,7 @@
         showAnswerBtn.style.cursor = "not-allowed";
         answeredCount++;
         if (answeredCount === totalCards) {
-          gameEnded = true;
-          setTimeout(showCreditsCard, 800);
+          setTimeout(closeModal, 800);
         }
       }
     }, 1000);
@@ -384,7 +361,7 @@
   modal.style.display = "none";
   
   // Reset modal content only if game hasn't ended
-  if (!gameEnded) {
+  if (answeredCount < totalCards) {
     modalQuestion.innerText = "";
     modalAnswer.innerText = "";
     modalTimer.innerText = "";
@@ -456,7 +433,7 @@ modal.onclick = function (e) {
     let clickCount = 0;
 
     card.addEventListener("click", () => {
-      if (gameEnded) return;
+      if (answeredCount === totalCards) return;
       clickCount++;
       if (clickCount === 1) {
         card.classList.toggle("flipped");
@@ -468,6 +445,14 @@ modal.onclick = function (e) {
     cardGrid.appendChild(card);
   });
 </script>
+
+<footer style="width:100%;text-align:center;padding:32px 0 24px 0;font-size:1.1rem;color:#64748b;letter-spacing:0.5px;position:relative;bottom:0;background:rgba(255,255,255,0.7);border-top:1px solid #e5e7eb;">
+  <div>Conceptualized by : D Suganya , A.A.D</div>
+  <div>Question Curation by : Jayanthi ,A.D & D.Suganya, A.A.D</div>
+  <div>Developed by : R.Nithyasri</div>
+  <div>Scoring Support : Venkata Surya Ganesh , Inspector</div>
+  <div>Copyrights Reserved: 20th Batch of Induction Course for Inspectors of GST , NACIN Chennai Team</div>
+</footer>
 
 </body>
 </html>
