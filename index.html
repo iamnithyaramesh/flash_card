@@ -262,7 +262,7 @@
   // Helper to get the points type from a value string
   function getPtsType(val) {
     if (val === "Double-200") return "Double-200";
-    if (val === "350") return "350";
+    if (val === "350 Pts") return "350 Pts";
     const match = val.match(/(\d+)/);
     return match ? parseInt(match[1], 10) : val;
   }
